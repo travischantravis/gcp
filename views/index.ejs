@@ -5,11 +5,67 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" type="text/css" href="css/index.css" />
   <title>GCP</title>
 </head>
 
 <body>
-  <h1>HI</h1>
+  <h1>test</h1>
+  <progress value="00" max="100" id="uploader">0%</progress>
+  <input type="file" value="upload" id="fileButton">
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-storage.js"></script>
+
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyD5jmluU_hrvxxgd7_VHKZ4bif0O4UjghY",
+      authDomain: "davis-265523.firebaseapp.com",
+      databaseURL: "https://davis-265523.firebaseio.com",
+      projectId: "davis-265523",
+      storageBucket: "davis-265523.appspot.com",
+      messagingSenderId: "292521290205",
+      appId: "1:292521290205:web:1af25d78434f4c96506e34",
+      measurementId: "G-1T08H92V8T"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    var uploader = document.getElementById('uploader');
+    var fileButton = document.getElementById('fileButton');
+
+    // Listen for file selection
+    fileButton.addEventListener('change', e => {
+      // Get file
+      var file = e.target.files[0];
+
+      // Create a storage ref
+      var storageRef = firebase.storage().ref('gcp_image/' + file.name);
+
+      // Upload file
+      var task = storageRef.put(file);
+
+      // Update progress bar
+      task.on('state_changed',
+        function progress(snapshot) {
+          var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          uploader.value = percentage;
+        },
+        function error(err) {
+
+        },
+
+        function complete() {
+
+        }
+      );
+    });
+
+
+  </script>
 </body>
 
 </html>
